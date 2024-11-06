@@ -1,0 +1,27 @@
+{
+  "name": "laravel/project",
+  "autoload": {
+    "files": [
+      "src/Main/Foundation/helpers.php",
+      "src/Main/Support/helpers.php"
+    ],
+    "psr-4": {
+      "App\\": "app/",
+      "Src\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "hassan",
+      "email": "hasanshahnazi8@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/mailer": "^7.1",
+    "illuminate/collections": "^11.27",
+    "nesbot/carbon": "^3.8",
+    "vlucas/phpdotenv": "^5.6",
+    "ext-openssl": "*",
+    "ext-pdo": "*"
+  }
+}
