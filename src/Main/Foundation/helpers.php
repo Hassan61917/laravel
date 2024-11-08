@@ -1,6 +1,7 @@
 <?php
 
 use Src\Main\Container\Container;
+use Src\Main\Support\Env;
 
 if (!function_exists('app')) {
     function app(?string $abstract = null): object
@@ -40,5 +41,11 @@ if (!function_exists('resource_path')) {
     function resource_path(string $path = ''): string
     {
         return app()->resourcePath($path);
+    }
+}
+if (!function_exists('env')) {
+    function env(string $key, mixed $default = null): mixed
+    {
+        return Env::get($key, $default);
     }
 }

@@ -20,6 +20,8 @@ class Application extends Container implements IApplication
     protected string $databasePath;
     protected string $publicPath;
     protected string $storagePath;
+    protected string $environmentPath;
+    protected string $environmentFile = ".env";
     protected string $namespace = "App";
     protected bool $booted = false;
     protected bool $hasBeenBootstrapped = false;
@@ -43,6 +45,11 @@ class Application extends Container implements IApplication
         $app = new static($basePath, require "baseServices.php");
 
         $builder = new ApplicationBuilder($app);
+
+
+        $builder
+            ->withBootstraps()
+            ->withProviders();
 
         return $builder;
     }
@@ -149,6 +156,26 @@ class Application extends Container implements IApplication
     public function bootstrapProviderPath(): string
     {
         return $this->bootstrapPath('providers.php');
+    }
+    public function environmentPath(): string
+    {
+        return $this->environmentPath ?? $this->basePath;
+    }
+    public function setEnvironmentPath(string $path): static
+    {
+        $this->environmentPath = $path;
+
+        return $this;
+    }
+    public function environmentFile(): string
+    {
+        return $this->environmentFile;
+    }
+    public function setEnvironmentFile(string $file): static
+    {
+        $this->environmentFile = $file;
+
+        return $this;
     }
     public function hasDebugModeEnabled(): bool
     {

@@ -17,6 +17,12 @@ abstract class ServiceProvider
         $this->booting = new ObserverList();
         $this->booted = new ObserverList();
     }
+    public static function defaultProviders(): DefaultProviders
+    {
+        $providers = require_once __DIR__ . "/providers.php";
+
+        return new DefaultProviders($providers);
+    }
     public function boot(): void {}
     public function getAliases(): array
     {
