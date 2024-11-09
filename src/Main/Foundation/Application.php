@@ -6,6 +6,8 @@ use Closure;
 use Src\Main\Container\Container;
 use Src\Main\Container\IContainer;
 use Src\Main\Foundation\Configuration\ApplicationBuilder;
+use Src\Main\Foundation\Http\IHttpKernel;
+use Src\Main\Http\Request;
 use Src\Main\Support\ServiceProvider;
 use Src\Main\Utils\IObserverList;
 use Src\Main\Utils\ObserverList;
@@ -49,7 +51,8 @@ class Application extends Container implements IApplication
 
         $builder
             ->withBootstraps()
-            ->withProviders();
+            ->withProviders()
+            ->withKernels();
 
         return $builder;
     }
@@ -286,6 +289,16 @@ class Application extends Container implements IApplication
         $providers = $this["config"]["app.providers"];
 
         $this->registerServiceProviders($providers);
+    }
+    public function handleRequest(Request $request): void
+    {
+        $kernel = $this->make(IHttpKernel::class);
+
+        $response = $kernel->handle($request);
+
+        $response->send();
+
+        $kernel->terminate($request, $response);
     }
     protected function init(string $basePath): void
     {

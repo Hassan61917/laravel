@@ -2,8 +2,12 @@
 
 namespace Src\Main\Foundation\Configuration;
 
+use Closure;
 use Src\Main\Foundation\Application;
 use Src\Main\Foundation\Bootstraps\RegisterProviders;
+use Src\Main\Foundation\Http\HttpKernel;
+use Src\Main\Foundation\Http\IHttpKernel;
+use Src\Main\Http\MiddlewareContainer\MiddlewareContainer;
 
 class ApplicationBuilder
 {
@@ -22,6 +26,32 @@ class ApplicationBuilder
         RegisterProviders::setProviderPath(
             $this->app->bootstrapProviderPath()
         );
+
+        return $this;
+    }
+    public function withKernels(): static
+    {
+        $this->app->singleton(IHttpKernel::class, HttpKernel::class);
+
+        return $this;
+    }
+    public function withMiddlewares(Closure $closure): static
+    {
+        $callback = function (HttpKernel $kernel) use ($closure) {
+            $container = new MiddlewareContainer();
+
+            call_user_func($closure, $container);
+
+            $kernel->setMiddlewares($container->getGlobalMiddlewares());
+
+            $kernel->setMiddlewareGroups($container->getMiddlewareGroups());
+
+            $kernel->setMiddlewareAliases($container->getMiddlewareAliases());
+
+            $kernel->syncMiddlewares();
+        };
+
+        $this->app->afterResolving(HttpKernel::class, $callback);
 
         return $this;
     }
