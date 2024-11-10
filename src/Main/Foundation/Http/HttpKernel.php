@@ -8,6 +8,7 @@ use Src\Main\Foundation\IApplication;
 use Src\Main\Http\Pipeline;
 use Src\Main\Http\Request;
 use Src\Main\Http\Response;
+use Src\Main\Routing\Router;
 
 class HttpKernel implements IHttpKernel
 {
@@ -16,6 +17,7 @@ class HttpKernel implements IHttpKernel
     protected array $middlewareAliases = [];
     public function __construct(
         protected IApplication $app,
+        protected Router $router
     ) {}
     public function prependMiddleware(string $middleware): static
     {
@@ -57,7 +59,16 @@ class HttpKernel implements IHttpKernel
     {
         $this->middlewareAliases = $middlewareAliases;
     }
-    public function syncMiddlewares(): void {}
+    public function syncMiddlewares(): void
+    {
+        foreach ($this->middlewareGroups as $group => $middlewares) {
+            $this->router->middlewareGroup($group, $middlewares);
+        }
+
+        foreach ($this->middlewareAliases as $alias => $middleware) {
+            $this->router->aliasMiddleware($alias, $middleware);
+        }
+    }
     public function getMiddlewareAliases(): array
     {
         return $this->middlewareAliases;
@@ -99,7 +110,9 @@ class HttpKernel implements IHttpKernel
     protected function dispatchToRouter(): Closure
     {
         return function (Request $request) {
-            return new Response("it works");
+            $this->app->instance('request', $request);
+
+            return $this->router->dispatch($request);
         };
     }
 }

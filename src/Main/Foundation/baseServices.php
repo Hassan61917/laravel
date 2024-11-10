@@ -1,3 +1,7 @@
 <?php
 
-return [];
+use Src\Main\Routing\RoutingServiceProvider;
+
+return [
+    RoutingServiceProvider::class
+];

@@ -7,8 +7,6 @@ use RuntimeException;
 use Src\Main\Http\Traits\InteractsWithContentTypes;
 use Src\Main\Http\Traits\InteractsWithInput;
 use Src\Main\Routing\Route\Route;
-use Src\Main\Session\ISessionStore;
-use Src\Main\Session\SymfonySessionDecorator;
 use Src\Symfony\Http\IRequestInput;
 use Src\Symfony\Http\ISession;
 use Src\Symfony\Http\Request as BaseRequest;
@@ -56,6 +54,10 @@ class Request extends BaseRequest
     {
         return rawurldecode($this->path());
     }
+    public function route(): ?Route
+    {
+        return call_user_func($this->getRouteResolver());
+    }
     public function getRouteParam(string $key, mixed $default = null): mixed
     {
         $route = call_user_func($this->getRouteResolver());
@@ -65,6 +67,10 @@ class Request extends BaseRequest
         }
 
         return $route;
+    }
+    public function routeIs(array ...$names): bool
+    {
+        return $this->route() && $this->route()->named(...$names);
     }
     public function ajax(): bool
     {

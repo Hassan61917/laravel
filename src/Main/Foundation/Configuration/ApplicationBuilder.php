@@ -3,10 +3,12 @@
 namespace Src\Main\Foundation\Configuration;
 
 use Closure;
+use Src\Main\Facade\Facades\Route;
 use Src\Main\Foundation\Application;
 use Src\Main\Foundation\Bootstraps\RegisterProviders;
 use Src\Main\Foundation\Http\HttpKernel;
 use Src\Main\Foundation\Http\IHttpKernel;
+use Src\Main\Foundation\Providers\RouteServiceProvider;
 use Src\Main\Http\MiddlewareContainer\MiddlewareContainer;
 
 class ApplicationBuilder
@@ -55,6 +57,22 @@ class ApplicationBuilder
 
         return $this;
     }
+    public function withRouting(
+        ?string $web = null,
+        ?string $api = null,
+        string $apiPrefix = "api"
+    ): static {
+
+        $using = $this->buildRoutingCallback($web, $api, $apiPrefix);
+
+        RouteServiceProvider::setAlwaysLoadRoutesUsing($using);
+
+        $this->app->booting(function () {
+            $this->app->register(new RouteServiceProvider($this->app), true);
+        });
+
+        return $this;
+    }
     public function create(): Application
     {
         return $this->app;
@@ -63,5 +81,17 @@ class ApplicationBuilder
     {
         $path = dirname(__DIR__) . "/bootstraps.php";
         return require_once $path;
+    }
+    protected function buildRoutingCallback(?string $web = null, ?string $api = null, ?string $apiPrefix = null): \Closure
+    {
+        return function () use ($web, $api, $apiPrefix) {
+            if ($web && realpath($web)) {
+                Route::middleware('web')->group($web);
+            }
+
+            if ($api && realpath($api)) {
+                Route::middleware('api')->prefix($apiPrefix)->group($api);
+            }
+        };
     }
 }

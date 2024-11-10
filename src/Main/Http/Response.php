@@ -4,9 +4,10 @@ namespace Src\Main\Http;
 
 use InvalidArgumentException;
 use Src\Main\Http\Traits\ResponseTrait;
+use Src\Main\Routing\Route\IActionResult;
 use Src\Symfony\Http\Response as BaseResponse;
 
-class Response extends BaseResponse
+class Response extends BaseResponse implements IActionResult
 {
     use ResponseTrait;
     public function __construct(

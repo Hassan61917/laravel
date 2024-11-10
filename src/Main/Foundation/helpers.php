@@ -1,6 +1,7 @@
 <?php
 
 use Src\Main\Container\Container;
+use Src\Main\Http\Response;
 use Src\Main\Support\Env;
 
 if (!function_exists('app')) {
@@ -47,5 +48,11 @@ if (!function_exists('env')) {
     function env(string $key, mixed $default = null): mixed
     {
         return Env::get($key, $default);
+    }
+}
+if (!function_exists('response')) {
+    function response(string $content = "", int $status = 200, array $headers = []): Response
+    {
+        return new Response($content, $status, $headers);
     }
 }
