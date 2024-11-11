@@ -56,3 +56,21 @@ if (!function_exists('response')) {
         return new Response($content, $status, $headers);
     }
 }
+if (!function_exists('encrypt')) {
+    function encrypt(mixed $value, bool $serialize = true): string
+    {
+        return app('encryptor')->encrypt($value, $serialize);
+    }
+}
+if (!function_exists('decrypt')) {
+    function decrypt(string $value, bool $unserialize = true): mixed
+    {
+        return app('encryptor')->decrypt($value, $unserialize);
+    }
+}
+if (!function_exists('bcrypt')) {
+    function bcrypt(string $value, array $options = []): string
+    {
+        return app('hash')->getDriver()->make($value, $options);
+    }
+}
