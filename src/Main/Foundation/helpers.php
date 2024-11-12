@@ -3,6 +3,7 @@
 use Src\Main\Container\Container;
 use Src\Main\Http\Response;
 use Src\Main\Support\Env;
+use Src\Symfony\Http\Cookie;
 
 if (!function_exists('app')) {
     function app(?string $abstract = null): object
@@ -72,5 +73,22 @@ if (!function_exists('bcrypt')) {
     function bcrypt(string $value, array $options = []): string
     {
         return app('hash')->getDriver()->make($value, $options);
+    }
+}
+if (!function_exists('cookie')) {
+    function cookie(string $name, ?string $value, int $minutes = 0): Cookie
+    {
+        return app("cookie")->make($name, $value, $minutes);
+    }
+}
+if (!function_exists('session')) {
+    function session(string $key, ?string $value = null): mixed
+    {
+        if ($value) {
+            app('session')->put($key, $value);
+            return null;
+        }
+
+        return app('session')->get($key);
     }
 }

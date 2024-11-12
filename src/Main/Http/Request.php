@@ -7,6 +7,8 @@ use RuntimeException;
 use Src\Main\Http\Traits\InteractsWithContentTypes;
 use Src\Main\Http\Traits\InteractsWithInput;
 use Src\Main\Routing\Route\Route;
+use Src\Main\Session\ISessionStore;
+use Src\Main\Session\SymfonySessionDecorator;
 use Src\Symfony\Http\IRequestInput;
 use Src\Symfony\Http\ISession;
 use Src\Symfony\Http\Request as BaseRequest;
@@ -104,7 +106,10 @@ class Request extends BaseRequest
 
         return data_get($this->json->all(), $key);
     }
-
+    public function setLaravelSession(ISessionStore $session): void
+    {
+        $this->session = new SymfonySessionDecorator($session);
+    }
     public function session(): ?ISession
     {
         if (! $this->hasSession()) {
