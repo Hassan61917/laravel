@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index(): IActionResult
     {
-        return response("Home Page");
+        return view("index");
     }
 }

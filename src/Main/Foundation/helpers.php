@@ -3,6 +3,7 @@
 use Src\Main\Container\Container;
 use Src\Main\Http\Response;
 use Src\Main\Support\Env;
+use Src\Main\View\View;
 use Src\Symfony\Http\Cookie;
 
 if (!function_exists('app')) {
@@ -90,5 +91,11 @@ if (!function_exists('session')) {
         }
 
         return app('session')->get($key);
+    }
+}
+if (!function_exists('view')) {
+    function view(string $view, array $data = []): View
+    {
+        return app("view")->make($view, $data);
     }
 }
