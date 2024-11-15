@@ -14,7 +14,10 @@ $builder
     )
     ->withMiddlewares(function (MiddlewareContainer $middleware) {
         // add your middlewares here
-    });
+    })
+    ->withCommands([
+        __DIR__ . '/../routes/console.php'
+    ]);
 
 
 return $builder->create();

@@ -43,10 +43,9 @@ class Str
     {
         return strtolower($value);
     }
-    public static function snake(string $value): string
+    public static function snake(string $value, string $delimiter = "_"): string
     {
         $key = $value;
-        $delimiter = "_";
 
         if (isset(static::$snakeCache[$key][$delimiter])) {
             return static::$snakeCache[$key][$delimiter];
@@ -177,5 +176,23 @@ class Str
         $quoted = preg_quote($prefix, '/');
 
         return $prefix . preg_replace('/^(?:' . $quoted . ')+/u', '', $value);
+    }
+    public static function replaceLast(string $search, string $replace, string $subject): string
+    {
+        if (empty($search)) {
+            return $subject;
+        }
+
+        $position = strrpos($subject, $search);
+
+        if ($position) {
+            return substr_replace($subject, $replace, $position, strlen($search));
+        }
+
+        return $subject;
+    }
+    public static function kebab(string $value): string
+    {
+        return static::snake($value, '-');
     }
 }

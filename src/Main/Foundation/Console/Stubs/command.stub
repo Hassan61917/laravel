@@ -1,0 +1,16 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Console\AppCommand;
+
+class {{class}} extends AppCommand
+{
+    protected string $signature = '{{command}}';
+
+    protected string $description = 'Command description';
+    public function handle():void
+    {
+        //
+    }
+}

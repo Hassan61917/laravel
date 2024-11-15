@@ -1,0 +1,15 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Http\Middleware;
+use Src\Main\Http\Request;
+use Src\Main\Http\Response;
+
+class {{class}} extends Middleware
+{
+    protected function doHandle(Request $request, string ...$args): ?Response
+    {
+        return null;
+    }
+}

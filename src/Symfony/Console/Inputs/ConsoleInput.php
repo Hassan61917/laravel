@@ -162,15 +162,16 @@ abstract class ConsoleInput implements IConsoleInput
             throw new RuntimeException("The {$name} option does not accept a value.");
         }
 
-        if (!$value) {
-            if ($option->isRequired()) {
-                throw new RuntimeException("The {$name} option requires a value.");
-            }
-            if ($option->acceptValue()) {
-                $value = $this->getValueFromTokens();
-            } else {
-                $value = true;
-            }
+        if (!$value && $option->acceptValue()) {
+            $value = $this->getValueFromTokens();
+        }
+
+        if (!$value && $option->isRequired()) {
+            throw new RuntimeException("The {$name} option requires a value.");
+        }
+
+        if (!$value && $option->isNone()) {
+            $value = true;
         }
 
         $this->options[$name] = $value;

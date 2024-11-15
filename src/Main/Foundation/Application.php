@@ -6,11 +6,14 @@ use Closure;
 use Src\Main\Container\Container;
 use Src\Main\Container\IContainer;
 use Src\Main\Foundation\Configuration\ApplicationBuilder;
+use Src\Main\Foundation\Console\IConsoleKernel;
 use Src\Main\Foundation\Http\IHttpKernel;
 use Src\Main\Http\Request;
 use Src\Main\Support\ServiceProvider;
 use Src\Main\Utils\IObserverList;
 use Src\Main\Utils\ObserverList;
+use Src\Symfony\Console\Inputs\IConsoleInput;
+use Src\Symfony\Console\Outputs\IConsoleOutput;
 
 class Application extends Container implements IApplication
 {
@@ -47,7 +50,6 @@ class Application extends Container implements IApplication
         $app = new static($basePath, require "baseServices.php");
 
         $builder = new ApplicationBuilder($app);
-
 
         $builder
             ->withBootstraps()
@@ -299,6 +301,16 @@ class Application extends Container implements IApplication
         $response->send();
 
         $kernel->terminate($request, $response);
+    }
+    public function handleCommand(IConsoleInput $input, IConsoleOutput $output): int
+    {
+        $kernel = $this->make(IConsoleKernel::class);
+
+        $status = $kernel->handle($input, $output);
+
+        $kernel->terminate($input, $status);
+
+        return $status;
     }
     protected function init(string $basePath): void
     {

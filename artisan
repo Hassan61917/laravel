@@ -1,0 +1,13 @@
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+
+$input = new \Src\Symfony\Console\Inputs\ArgvInput();
+$output = new \Src\Symfony\Console\Outputs\ConsoleOutput();
+
+$app = require_once __DIR__ . "/bootstrap/app.php";
+
+$status = $app->handleCommand($input, $output);
+
+exit($status);

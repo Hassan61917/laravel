@@ -6,6 +6,8 @@ use Closure;
 use Src\Main\Facade\Facades\Route;
 use Src\Main\Foundation\Application;
 use Src\Main\Foundation\Bootstraps\RegisterProviders;
+use Src\Main\Foundation\Console\ConsoleKernel;
+use Src\Main\Foundation\Console\IConsoleKernel;
 use Src\Main\Foundation\Http\HttpKernel;
 use Src\Main\Foundation\Http\IHttpKernel;
 use Src\Main\Foundation\Providers\RouteServiceProvider;
@@ -34,6 +36,8 @@ class ApplicationBuilder
     public function withKernels(): static
     {
         $this->app->singleton(IHttpKernel::class, HttpKernel::class);
+
+        $this->app->singleton(IConsoleKernel::class, ConsoleKernel::class);
 
         return $this;
     }
@@ -70,6 +74,23 @@ class ApplicationBuilder
         $this->app->booting(function () {
             $this->app->register(new RouteServiceProvider($this->app), true);
         });
+
+        return $this;
+    }
+    public function withCommands(array $paths = []): static
+    {
+        $paths[] = $this->app->path('Console/Commands');
+
+        $this->app->afterResolving(
+            ConsoleKernel::class,
+            function (ConsoleKernel $kernel) use ($paths) {
+                [$routes, $paths] = collect($paths)->partition(fn($path) => is_file($path));
+                $this->app->booted(function () use ($kernel, $routes, $paths) {
+                    $kernel->addCommandPaths(...$paths);
+                    $kernel->addCommandRoutePaths(...$routes);
+                });
+            }
+        );
 
         return $this;
     }

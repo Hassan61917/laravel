@@ -29,6 +29,10 @@ abstract class InputElement
     {
         return $this->mode == InputMode::Optional;
     }
+    public function isNone(): bool
+    {
+        return $this->mode == InputMode::None;
+    }
     public function acceptValue(): bool
     {
         return $this->isRequired() || $this->isOptional();

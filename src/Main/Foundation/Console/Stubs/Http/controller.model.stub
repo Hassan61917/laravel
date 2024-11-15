@@ -1,0 +1,40 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Models\{{model}};
+use Src\Main\Routing\Route\IActionResult;
+use Src\Main\Http\Request;
+use App\Http\Controllers\Controller;
+
+class {{class}} extends Controller
+{
+   public function index():IActionResult
+   {
+       return view("");
+   }
+   public function show({{model}} ${{modelVariable}}):IActionResult
+   {
+       return view("");
+   }
+   public function create():IActionResult
+   {
+        return view("");
+   }
+   public function store(Request $request):IActionResult
+   {
+       return resoponse();
+   }
+   public function edit({{model}} ${{modelVariable}}):IActionResult
+   {
+        return view("");
+   }
+   public function update({{model}} ${{modelVariable}},Request $request):IActionResult
+   {
+       return resoponse();
+   } 
+   public function destroy({{model}} ${{modelVariable}},Request $request):IActionResult
+   {
+       return resoponse();
+   }
+}
