@@ -1,0 +1,15 @@
+<?php
+
+namespace {{namespace}};
+
+use InvalidArgumentException;
+use Src\Main\Validation\Rules\Rule;
+
+class {{class}} extends Rule
+{
+    public function pass(string $attribute, mixed $value, array $params = []): bool
+    {
+        // TODO: Write your validation code here.
+        return true;
+    }
+}

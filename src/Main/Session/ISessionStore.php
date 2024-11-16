@@ -19,6 +19,7 @@ interface ISessionStore
     public function get(string $key, mixed $default = null): mixed;
     public function pull(string $key, mixed $default = null): mixed;
     public function put(string $key, mixed $value = null): void;
+    public function flash(string $key, mixed $value = true): void;
     public function replace(string $key, mixed $value = null): void;
     public function token(): string;
     public function regenerateToken(): void;

@@ -158,6 +158,14 @@ class Route
     {
         return isset($this->parameters);
     }
+    public function hasParameter(string $name): bool
+    {
+        return isset($this->parameters[$name]);
+    }
+    public function getDomain(): ?string
+    {
+        return $this->data["domain"] ?? null;
+    }
     public function replaceParameter(string $name, mixed $value): static
     {
         $this->parameters[$name] = $value;

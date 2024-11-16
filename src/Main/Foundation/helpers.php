@@ -2,6 +2,8 @@
 
 use Src\Main\Container\Container;
 use Src\Main\Http\Response;
+use Src\Main\Http\Redirect\RedirectResponse;
+use Src\Main\Http\UrlGenerator;
 use Src\Main\Support\Env;
 use Src\Main\View\View;
 use Src\Symfony\Http\Cookie;
@@ -97,5 +99,31 @@ if (!function_exists('view')) {
     function view(string $view, array $data = []): View
     {
         return app("view")->make($view, $data);
+    }
+}
+if (! function_exists('translate')) {
+    function translate(string $key, ?string $language = null): string
+    {
+        $language = $language ?: env("APP_LANGUAGE");
+
+        return app('translator')->get($key, $language);
+    }
+}
+if (!function_exists('url')) {
+    function url(): UrlGenerator
+    {
+        return app("url");
+    }
+}
+if (! function_exists('route')) {
+    function route(string $name, array $parameters = [], bool $absolute = true): string
+    {
+        return app('url')->route($name, $parameters, $absolute);
+    }
+}
+if (! function_exists('redirect')) {
+    function redirect(string $to, int $status = 302, array $headers = [], bool $secure = false): RedirectResponse
+    {
+        return app('redirect')->to($to, $status, $headers, $secure);
     }
 }

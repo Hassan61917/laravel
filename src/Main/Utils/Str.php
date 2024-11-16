@@ -195,4 +195,14 @@ class Str
     {
         return static::snake($value, '-');
     }
+    public static function before(string $subject, string $search): string
+    {
+        if (empty($search)) {
+            return $subject;
+        }
+
+        $result = strstr($subject, $search, true);
+
+        return $result === false ? $subject : $result;
+    }
 }

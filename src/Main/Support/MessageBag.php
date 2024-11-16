@@ -4,7 +4,7 @@ namespace Src\Main\Support;
 
 use Illuminate\Support\Arr;
 
-class MessageBag
+class MessageBag implements IMessageProvider
 {
     protected array $messages = [];
     protected string $format = ':message';
@@ -108,7 +108,7 @@ class MessageBag
             $messages
         );
     }
-    public function all(string $format = null): array
+    public function all(?string $format = null): array
     {
         $format = $this->checkFormat($format);
 
@@ -137,7 +137,7 @@ class MessageBag
         }
         return array_map(fn($message) => str_replace([':message', ':key'], [$message, $messageKey], $format), $messages);
     }
-    protected function checkFormat(string $format): string
+    protected function checkFormat(?string $format): string
     {
         return $format ?: $this->format;
     }
@@ -174,6 +174,10 @@ class MessageBag
     public function count(): int
     {
         return count($this->messages, COUNT_RECURSIVE) - count($this->messages);
+    }
+    public function getMessageBag(): MessageBag
+    {
+        return $this;
     }
     public function toArray(): array
     {

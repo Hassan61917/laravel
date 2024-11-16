@@ -88,13 +88,17 @@ class Request
     {
         return static::normalizeQueryString($this->server->get('QUERY_STRING'));
     }
-    public function getHeaders(): array
+    public function getHeaders(): IRequestInput
     {
-        return $this->headers->all();
+        return $this->headers;
     }
     public function getCookies(): IRequestInput
     {
         return $this->cookies;
+    }
+    public function getServer(): IRequestInput
+    {
+        return $this->server;
     }
     public function getIp(): string
     {
