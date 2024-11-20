@@ -134,7 +134,7 @@ class Application implements Describable
     }
     public function run(IConsoleInput $input, IConsoleOutput $output): int
     {
-        $name = $this->getCommandName($input);
+        $name = strtolower($this->getCommandName($input));
 
         if ($input->hasParameterOption("--help", "-h")) {
             $this->help = true;

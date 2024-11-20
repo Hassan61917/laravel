@@ -11,6 +11,7 @@ use Src\Main\Translation\TranslationServiceProvider;
 use Src\Main\Validation\ValidationServiceProvider;
 use Src\Main\Pagination\PaginationServiceProvider;
 use Src\Main\Database\DatabaseServiceProvider;
+use Src\Main\Database\MigrationServiceProvider;
 
 return [
     HttpServiceProvider::class,
@@ -24,4 +25,5 @@ return [
     ValidationServiceProvider::class,
     PaginationServiceProvider::class,
     DatabaseServiceProvider::class,
+    MigrationServiceProvider::class,
 ];

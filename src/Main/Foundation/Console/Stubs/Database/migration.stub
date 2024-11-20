@@ -1,0 +1,18 @@
+<?php
+
+use Src\Main\Database\Migrations\Migration;
+use Src\Main\Database\Schema\Blueprint\Blueprint;
+use Src\Main\Facade\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        //
+    }
+
+    public function down(): void
+    {
+        //
+    }
+};
