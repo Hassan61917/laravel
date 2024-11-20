@@ -10,6 +10,7 @@ use Src\Main\Foundation\Providers\ConsoleServiceProvider;
 use Src\Main\Translation\TranslationServiceProvider;
 use Src\Main\Validation\ValidationServiceProvider;
 use Src\Main\Pagination\PaginationServiceProvider;
+use Src\Main\Database\DatabaseServiceProvider;
 
 return [
     HttpServiceProvider::class,
@@ -21,5 +22,6 @@ return [
     ConsoleServiceProvider::class,
     TranslationServiceProvider::class,
     ValidationServiceProvider::class,
-    PaginationServiceProvider::class
+    PaginationServiceProvider::class,
+    DatabaseServiceProvider::class,
 ];
