@@ -127,3 +127,9 @@ if (! function_exists('redirect')) {
         return app('redirect')->to($to, $status, $headers, $secure);
     }
 }
+if (!function_exists('event')) {
+    function event(string|object $event, array $payload = []): void
+    {
+        app('events')->dispatch($event, $payload);
+    }
+}

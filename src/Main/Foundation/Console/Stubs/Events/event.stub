@@ -1,0 +1,13 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Events\Event;
+
+class {{class}} extends Event
+{
+    public function __construct()
+    {
+        //
+    }
+}

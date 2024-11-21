@@ -10,6 +10,7 @@ use Src\Main\Foundation\Console\ConsoleKernel;
 use Src\Main\Foundation\Console\IConsoleKernel;
 use Src\Main\Foundation\Http\HttpKernel;
 use Src\Main\Foundation\Http\IHttpKernel;
+use Src\Main\Foundation\Providers\EventServiceProvider;
 use Src\Main\Foundation\Providers\RouteServiceProvider;
 use Src\Main\Http\MiddlewareContainer\MiddlewareContainer;
 
@@ -91,6 +92,14 @@ class ApplicationBuilder
                 });
             }
         );
+
+        return $this;
+    }
+    public function withEvents(): static
+    {
+        $this->app->booting(function () {
+            $this->app->register(new EventServiceProvider($this->app));
+        });
 
         return $this;
     }

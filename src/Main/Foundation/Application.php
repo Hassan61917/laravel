@@ -54,7 +54,8 @@ class Application extends Container implements IApplication
         $builder
             ->withBootstraps()
             ->withProviders()
-            ->withKernels();
+            ->withKernels()
+            ->withEvents();
 
         return $builder;
     }
