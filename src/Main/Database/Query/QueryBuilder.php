@@ -10,6 +10,7 @@ use Src\Main\Database\Connections\Connection;
 use Src\Main\Database\Query\Grammars\QueryGrammar;
 use Src\Main\Database\Query\Processors\QueryProcessor;
 use Src\Main\Database\Query\Traits\WithAggregate;
+use Src\Main\Database\Query\Traits\WithCrud;
 use Src\Main\Database\Query\Traits\WithJoins;
 use Src\Main\Database\Query\Traits\WithOrders;
 use Src\Main\Database\Query\Traits\WithPagination;
@@ -20,7 +21,8 @@ use Src\Main\Utils\ObserverList;
 
 class QueryBuilder
 {
-    use WithWheres,
+    use WithCrud,
+        WithWheres,
         WithJoins,
         WithOrders,
         WithAggregate,
@@ -76,6 +78,10 @@ class QueryBuilder
     {
         return $this->processor;
     }
+    public function getRawBindings(): array
+    {
+        return $this->bindings;
+    }
     public function beforeQuery(Closure $callback): static
     {
         $this->beforeQueryCallbacks->add($callback);
@@ -106,6 +112,10 @@ class QueryBuilder
     }
     public function addSelect(array $columns = []): static
     {
+        if (!isset($this->columns)) {
+            $this->columns = [];
+        }
+
         array_push($this->columns, ...$columns);
 
         return $this;
@@ -162,61 +172,6 @@ class QueryBuilder
     {
         return !$this->exists();
     }
-    public function insert(array $values): bool
-    {
-        if (empty($values)) {
-            return true;
-        }
-
-        $this->applyBeforeQueryCallbacks();
-
-        return $this->connection->insert(
-            $this->grammar->compileInsert($this, $values),
-            array_values($values)
-        );
-    }
-    public function insertGetId(array $values, string $sequence = null): int
-    {
-        $this->applyBeforeQueryCallbacks();
-
-        $sql = $this->grammar->compileInsert($this, $values);
-
-        $values = array_values($values);
-
-        return $this->processor->processInsertGetId($this, $sql, $values, $sequence);
-    }
-    public function update(array $values, array $raw = []): int
-    {
-        $this->applyBeforeQueryCallbacks();
-
-        $sql = $this->grammar->compileUpdate($this, $values, $raw);
-
-        return $this->connection->update(
-            $sql,
-            array_values($this->grammar->prepareBindingsForUpdate($this->bindings, $values))
-        );
-    }
-    public function delete(int $id = null): int
-    {
-        if ($id) {
-            $this->where($this->from . '.id', '=', $id);
-        }
-
-        $this->applyBeforeQueryCallbacks();
-
-        return $this->connection->delete(
-            $this->grammar->compileDelete($this),
-            array_values($this->grammar->prepareBindingsForDelete($this->bindings))
-        );
-    }
-    public function increment(string $column, int $amount = 1, array $extra = []): int
-    {
-        return $this->resolveIncrement($column, $amount, true, $extra);
-    }
-    public function decrement(string $column, int $amount = 1, array $extra = []): int
-    {
-        return $this->resolveIncrement($column, $amount, false, $extra);
-    }
     public function truncate(): void
     {
         $this->applyBeforeQueryCallbacks();
@@ -242,20 +197,6 @@ class QueryBuilder
         $this->applyBeforeQueryCallbacks();
 
         return $this->grammar->compileSelect($this);
-    }
-    public function get(array $columns = ['*']): Collection
-    {
-        $original = $this->columns ?? [];
-
-        if (!isset($this->columns)) {
-            $this->columns = $columns;
-        }
-
-        $result =  $this->processor->processSelect($this, $this->runSelect());
-
-        $this->columns = $original;
-
-        return collect($result);
     }
     public function cursor(): \Generator
     {

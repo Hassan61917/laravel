@@ -29,9 +29,9 @@ class RoutingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(IActionFactory::class, ActionFactory::class);
     }
-    protected function registerParameterBinder():void
+    protected function registerParameterBinder(): void
     {
-        $this->app->singleton(IRouteParameterBinder::class, RouteParameterBinder::class);
+        $this->app->singleton(IRouteParameterBinder::class, ModelParameterBinder::class);
     }
     protected function registerRouter(): void
     {

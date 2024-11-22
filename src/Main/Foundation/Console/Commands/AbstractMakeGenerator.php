@@ -17,6 +17,7 @@ abstract class AbstractMakeGenerator extends AppCommand
     protected string $path = "";
     protected string $type;
     protected string $stubsPath = "";
+    protected bool $addsType = true;
     protected Filesystem $files;
     public function __construct()
     {
@@ -46,7 +47,7 @@ abstract class AbstractMakeGenerator extends AppCommand
     {
         $name = $this->getNameInput();
 
-        if (!str_ends_with($name, $this->type)) {
+        if ($this->addsType && !str_ends_with($name, $this->type)) {
             $name .= $this->type;
         }
 
