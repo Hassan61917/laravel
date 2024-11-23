@@ -13,6 +13,7 @@ use Src\Main\Pagination\PaginationServiceProvider;
 use Src\Main\Database\DatabaseServiceProvider;
 use Src\Main\Database\MigrationServiceProvider;
 use Src\Main\Cache\CacheServiceProvider;
+use Src\Main\Auth\AuthServiceProvider;
 
 return [
     HttpServiceProvider::class,
@@ -27,5 +28,6 @@ return [
     PaginationServiceProvider::class,
     DatabaseServiceProvider::class,
     MigrationServiceProvider::class,
-    CacheServiceProvider::class
+    CacheServiceProvider::class,
+    AuthServiceProvider::class,
 ];

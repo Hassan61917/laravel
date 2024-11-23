@@ -1,0 +1,39 @@
+<?php
+
+namespace {{namespace}};
+
+use {{namespacedUserModel}};
+use App\Models\{{model}};
+use Src\Main\Auth\Authorization\Policy;
+
+class {{class}} extends Policy
+{
+    public function viewAny({{user}} $user): bool
+    {
+        return true;
+    }
+    public function view({{user}} $user, {{model}} ${{modelVariable}}): bool
+    {
+        return true;
+    }
+    public function create({{user}} $user): bool
+    {
+        return true;
+    }
+    public function update({{user}} $user, {{model}} ${{modelVariable}}): bool
+    {
+        return true;
+    }
+    public function delete({{user}} $user, {{model}} ${{modelVariable}}): bool
+    {
+        return true;
+    }
+    public function restore({{user}} $user, {{model}} ${{modelVariable}}): bool
+    {
+        return true;
+    }
+    public function forceDelete({{user}} $user, {{model}} ${{modelVariable}}): bool
+    {
+        return true;
+    }
+}

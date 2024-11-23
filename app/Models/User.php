@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use Src\Main\Auth\User as AppUser;
 use Src\Main\Database\Eloquent\Factories\HasFactory;
-use Src\Main\Database\Eloquent\Model;
-
-class User extends Model
+class User extends AppUser
 {
     use HasFactory;
 

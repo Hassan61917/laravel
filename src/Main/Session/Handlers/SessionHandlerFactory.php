@@ -17,7 +17,7 @@ class SessionHandlerFactory implements ISessionHandlerFactory
             "file" => $this->createFileHandler($config),
             "cookie" => $this->createCookieHandler($config),
             "array" => $this->createArrayHandler($config),
-            // "database" => $this->createDatabaseHandler($config)
+             "database" => $this->createDatabaseHandler($config)
         };
     }
     protected function createFileHandler(array $config): FileSessionHandler
@@ -40,5 +40,14 @@ class SessionHandlerFactory implements ISessionHandlerFactory
     protected function createArrayHandler(array $config): ArraySessionHandler
     {
         return new ArraySessionHandler($config["lifetime"]);
+    }
+    protected function createDatabaseHandler(array $config): DatabaseSessionHandler
+    {
+        return new DatabaseSessionHandler(
+            $this->container["db.connection"],
+            $config["table"],
+            $config["lifetime"],
+            $this->container
+        );
     }
 }

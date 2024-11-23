@@ -47,6 +47,10 @@ class ApplicationBuilder
         $callback = function (HttpKernel $kernel) use ($closure) {
             $container = new MiddlewareContainer();
 
+            $container->redirectGuestsTo("login");
+
+            $container->redirectUsersTo(route("home"));
+
             call_user_func($closure, $container);
 
             $kernel->setMiddlewares($container->getGlobalMiddlewares());

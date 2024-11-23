@@ -2,6 +2,9 @@
 
 namespace Src\Main\Http\MiddlewareContainer;
 
+use Src\Main\Auth\Exceptions\AuthenticationException;
+use Src\Main\Auth\Middlewares\Authenticate;
+
 class MiddlewareContainer
 {
     protected array $global = [];
@@ -17,6 +20,29 @@ class MiddlewareContainer
     protected array $pageMiddleware = [];
     protected array $customAliases = [];
     protected array $priority = [];
+    public function redirectTo(?string $guests=null, ?string $users = null): static
+    {
+        $guests = is_string($guests) ? fn() => $guests : $guests;
+        $users = is_string($users) ? fn() => $users : $users;
+
+        if ($guests) {
+            Authenticate::redirectUsing($guests);
+            AuthenticationException::redirectUsing($guests);
+        }
+
+        if ($users) {
+        }
+
+        return $this;
+    }
+    public function redirectGuestsTo(string $redirect): static
+    {
+        return $this->redirectTo($redirect);
+    }
+    public function redirectUsersTo(string $redirect): static
+    {
+        return $this->redirectTo(null, $redirect);
+    }
     public function prepend(string ...$middlewares): static
     {
         array_push($this->prepends, ...$middlewares);

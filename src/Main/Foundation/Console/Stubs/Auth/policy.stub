@@ -1,0 +1,12 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Auth\Authorization\Policy;
+
+class {{class}} extends Policy
+{
+    public function __construct()
+    {
+    }
+}

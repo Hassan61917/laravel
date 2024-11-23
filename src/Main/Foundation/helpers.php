@@ -1,5 +1,6 @@
 <?php
 
+use Src\Main\Auth\Authentication\IStatefulGuard;
 use Src\Main\Container\Container;
 use Src\Main\Http\Response;
 use Src\Main\Http\Redirect\RedirectResponse;
@@ -138,5 +139,11 @@ if (!function_exists('cache')) {
     function cache(): ICacheRepository
     {
         return app("cache")->getDriver();
+    }
+}
+if (!function_exists('auth')) {
+    function auth(): IStatefulGuard
+    {
+        return app("auth.driver");
     }
 }
