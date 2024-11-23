@@ -7,6 +7,7 @@ use Src\Main\Http\UrlGenerator;
 use Src\Main\Support\Env;
 use Src\Main\View\View;
 use Src\Symfony\Http\Cookie;
+use Src\Main\Cache\ICacheRepository;
 
 if (!function_exists('app')) {
     function app(?string $abstract = null): object
@@ -131,5 +132,11 @@ if (!function_exists('event')) {
     function event(string|object $event, array $payload = []): void
     {
         app('events')->dispatch($event, $payload);
+    }
+}
+if (!function_exists('cache')) {
+    function cache(): ICacheRepository
+    {
+        return app("cache")->getDriver();
     }
 }

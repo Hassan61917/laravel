@@ -12,6 +12,7 @@ use Src\Main\Validation\ValidationServiceProvider;
 use Src\Main\Pagination\PaginationServiceProvider;
 use Src\Main\Database\DatabaseServiceProvider;
 use Src\Main\Database\MigrationServiceProvider;
+use Src\Main\Cache\CacheServiceProvider;
 
 return [
     HttpServiceProvider::class,
@@ -26,4 +27,5 @@ return [
     PaginationServiceProvider::class,
     DatabaseServiceProvider::class,
     MigrationServiceProvider::class,
+    CacheServiceProvider::class
 ];
