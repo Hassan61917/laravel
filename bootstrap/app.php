@@ -17,7 +17,8 @@ $builder
     })
     ->withCommands([
         __DIR__ . '/../routes/console.php'
-    ]);
+    ])
+    ->withExceptions(function () {});
 
 
 return $builder->create();

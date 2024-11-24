@@ -3,12 +3,16 @@
 namespace Src\Main\Console;
 
 use Src\Main\Console\Traits\CallsCommands;
+use Src\Main\Debug\IExceptionHandler;
 use Src\Main\Foundation\IApplication;
 use Src\Symfony\Console\Commands\Command;
 use Src\Symfony\Console\Inputs\IConsoleInput;
 use Src\Symfony\Console\Outputs\IConsoleOutput;
+use Src\Main\Debug\ExceptionHandleable;
+use Src\Main\Debug\IExceptionOperation;
+use Throwable;
 
-class AppCommand extends Command
+class AppCommand extends Command implements ExceptionHandleable
 {
     use CallsCommands;
     protected string $signature;
@@ -51,9 +55,19 @@ class AppCommand extends Command
     }
     public function run(IConsoleInput $input, IConsoleOutput $output): int
     {
-        $this->input = $input;
-        $this->output = $output;
-        return parent::run($input, $output);
+        try {
+            $this->input = $input;
+            $this->output = $output;
+            $this->laravel->instance("command", $this);
+            return parent::run($input, $output);
+        } catch (Throwable $e) {
+            $this->getExceptionHandler()->handle($this, $e);
+            return 0;
+        }
+    }
+    public function handleException(IExceptionOperation $operation, Throwable $e): void
+    {
+        $operation->handleCommand($this, $e);
     }
     protected function execute(IConsoleInput $input, IConsoleOutput $output): int
     {
@@ -120,5 +134,9 @@ class AppCommand extends Command
     protected function write(string $text): void
     {
         $this->output->write($text);
+    }
+    protected function getExceptionHandler(): IExceptionHandler
+    {
+        return $this->laravel[IExceptionHandler::class];
     }
 }

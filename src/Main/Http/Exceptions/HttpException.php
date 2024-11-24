@@ -4,7 +4,7 @@ namespace Src\Main\Http\Exceptions;
 
 use RuntimeException;
 
-abstract class HttpException extends RuntimeException
+class HttpException extends RuntimeException
 {
     public function __construct(
         string $message,

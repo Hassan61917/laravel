@@ -10,6 +10,7 @@ use Src\Main\Database\Connections\Connection;
 use Src\Main\Database\Exceptions\QueryException;
 use Src\Main\Database\Query\QueryBuilder;
 use Src\Main\Support\Traits\InteractsWithTime;
+
 class DatabaseSessionHandler implements SessionHandlerInterface
 {
     use InteractsWithTime;
@@ -96,7 +97,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface
 
         return $this;
     }
-    protected function userId(): string
+    protected function userId(): ?string
     {
         return $this->container->make(IGuard::class)->id();
     }

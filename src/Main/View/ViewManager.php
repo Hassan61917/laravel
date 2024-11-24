@@ -38,11 +38,10 @@ class ViewManager implements IViewFactory
     {
         try {
             $this->resolvePath($name);
+            return true;
         } catch (InvalidArgumentException) {
             return false;
         }
-
-        return true;
     }
     public function share(string $key, mixed $value = null): static
     {

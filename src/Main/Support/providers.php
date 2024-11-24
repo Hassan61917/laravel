@@ -1,9 +1,11 @@
 <?php
 
+use Src\Main\Foundation\Providers\FoundationServiceProvider;
 use Src\Main\Cookie\CookieServiceProvider;
 use Src\Main\Encryption\EncryptionServiceProvider;
 use Src\Main\Hashing\HashServiceProvider;
 use Src\Main\Http\HttpServiceProvider;
+use Src\Main\Log\LogServiceProvider;
 use Src\Main\Session\SessionServiceProvider;
 use Src\Main\View\ViewServiceProvider;
 use Src\Main\Foundation\Providers\ConsoleServiceProvider;
@@ -16,6 +18,7 @@ use Src\Main\Cache\CacheServiceProvider;
 use Src\Main\Auth\AuthServiceProvider;
 
 return [
+    FoundationServiceProvider::class,
     HttpServiceProvider::class,
     EncryptionServiceProvider::class,
     HashServiceProvider::class,
@@ -30,4 +33,7 @@ return [
     MigrationServiceProvider::class,
     CacheServiceProvider::class,
     AuthServiceProvider::class,
+    CacheServiceProvider::class,
+    AuthServiceProvider::class,
+    LogServiceProvider::class,
 ];

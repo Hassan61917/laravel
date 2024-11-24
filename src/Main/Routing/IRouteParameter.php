@@ -8,5 +8,5 @@ interface IRouteParameter
 {
     public function getRouteKey(): int;
     public function getRouteKeyName(): string;
-    public function resolveRouteBinding(string $value, string $field = null): Model;
+    public function resolveRouteBinding(string $value, string $field = null): ?Model;
 }

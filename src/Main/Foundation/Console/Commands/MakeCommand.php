@@ -12,6 +12,7 @@ class MakeCommand extends AbstractMakeGenerator
     protected string $type = "Command";
     protected string $stubsPath = "";
     protected string $description = 'Create a new Artisan command';
+    protected bool $addsType = false;
     protected function buildClass(string $name): string
     {
         $stub = parent::buildClass($name);

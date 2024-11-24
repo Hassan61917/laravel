@@ -3,6 +3,7 @@
 namespace Src\Main\Routing;
 
 use Src\Main\Container\IContainer;
+use Src\Main\Database\Exceptions\Eloquent\ModelNotFoundException;
 use Src\Main\Routing\Route\Route;
 
 class ModelParameterBinder implements IRouteParameterBinder
@@ -23,7 +24,11 @@ class ModelParameterBinder implements IRouteParameterBinder
                 if ($class instanceof IRouteParameter) {
                     $value = $parameter["value"];
                     $field = $parameter["field"];
-                    $route->replaceParameter($name, $class->resolveRouteBinding($value, $field));
+                    $model = $class->resolveRouteBinding($value, $field);
+                    if (is_null($model)) {
+                        throw new ModelNotFoundException();
+                    }
+                    $route->replaceParameter($name, $model);
                 }
             }
         }

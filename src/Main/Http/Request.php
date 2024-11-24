@@ -4,21 +4,24 @@ namespace Src\Main\Http;
 
 use Closure;
 use RuntimeException;
+use Src\Main\Debug\ExceptionHandleable;
+use Src\Main\Debug\IExceptionOperation;
 use Src\Main\Http\Traits\InteractsWithContentTypes;
 use Src\Main\Http\Traits\InteractsWithInput;
 use Src\Main\Routing\Route\Route;
 use Src\Main\Session\ISessionStore;
 use Src\Main\Session\SymfonySessionDecorator;
 use Src\Symfony\Http\IRequestInput;
-use Src\Symfony\Http\ISession;
 use Src\Symfony\Http\Request as BaseRequest;
 use Src\Symfony\Http\RequestInput;
+use Throwable;
 
-class Request extends BaseRequest
+class Request extends BaseRequest implements ExceptionHandleable
 {
     use InteractsWithInput,
         InteractsWithContentTypes;
 
+    protected ISessionStore $sessionStore;
     protected ?IRequestInput $json = null;
     protected Closure $routeResolver;
 
@@ -108,15 +111,32 @@ class Request extends BaseRequest
     }
     public function setLaravelSession(ISessionStore $session): void
     {
-        $this->session = new SymfonySessionDecorator($session);
+        $this->sessionStore = $session;
+        $this->setSession(new SymfonySessionDecorator($session));
     }
-    public function session(): ?ISession
+    public function session(): ?ISessionStore
     {
         if (! $this->hasSession()) {
             throw new RuntimeException('Session store not set on request.');
         }
 
-        return $this->session;
+        return $this->sessionStore;
+    }
+    public function handleException(IExceptionOperation $operation, Throwable $e): void
+    {
+        $operation->handleRequest($this, $e);
+    }
+    public function fullUrlIs(string ...$patterns): bool
+    {
+        $url = $this->fullUrl();
+
+        return collect($patterns)->contains(fn($pattern) => $pattern == $url);
+    }
+    public function is(string ...$patterns): bool
+    {
+        $path = $this->decodedPath();
+
+        return collect($patterns)->contains(fn($pattern) => $pattern == $path);
     }
     protected function getInputSource()
     {

@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Src\Main\Utils\Str;
 
 if (! function_exists('class_basename')) {
     function class_basename($class): string
@@ -40,5 +41,14 @@ if (! function_exists('now')) {
     function now(): Carbon
     {
         return Carbon::now();
+    }
+}
+if (! function_exists('find_class')) {
+    function find_class(string $filePath): string
+    {
+        $basePath = rtrim(base_path()) . "\\";
+        [$namespace, $path] = explode("\\", Str::after($filePath, $basePath), 2);
+        $path = Str::ucfirst($namespace) . "\\" . $path;
+        return str_replace([".php", '/'], ["", "\\"], $path);
     }
 }

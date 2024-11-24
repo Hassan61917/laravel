@@ -228,6 +228,10 @@ class Request
     {
         $this->session = $session;
     }
+    public function getSession(): ISession
+    {
+        return $this->session;
+    }
     public function getAcceptableContentTypes(): array
     {
         return $this->acceptableContentTypes ??= array_map(

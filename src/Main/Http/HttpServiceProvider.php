@@ -11,6 +11,7 @@ class HttpServiceProvider extends ServiceProvider
     {
         $this->registerUrlGenerator();
         $this->registerRedirector();
+        $this->registerResponseFactory();
     }
     protected function registerUrlGenerator(): void
     {
@@ -30,5 +31,9 @@ class HttpServiceProvider extends ServiceProvider
         $this->app->singleton('redirect', function ($app) {
             return new Redirector($app['url'], $app["session.store"]);
         });
+    }
+    protected function registerResponseFactory(): void
+    {
+        $this->app->singleton(IResponseFactory::class, ResponseFactory::class);
     }
 }

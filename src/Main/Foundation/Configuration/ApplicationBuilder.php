@@ -13,6 +13,9 @@ use Src\Main\Foundation\Http\IHttpKernel;
 use Src\Main\Foundation\Providers\EventServiceProvider;
 use Src\Main\Foundation\Providers\RouteServiceProvider;
 use Src\Main\Http\MiddlewareContainer\MiddlewareContainer;
+use Src\Main\Debug\ExceptionHandler;
+use Src\Main\Debug\ExceptionManager;
+use Src\Main\Debug\IExceptionHandler;
 
 class ApplicationBuilder
 {
@@ -49,7 +52,7 @@ class ApplicationBuilder
 
             $container->redirectGuestsTo("login");
 
-            $container->redirectUsersTo(route("home"));
+            $container->redirectUsersTo("home");
 
             call_user_func($closure, $container);
 
@@ -104,6 +107,21 @@ class ApplicationBuilder
         $this->app->booting(function () {
             $this->app->register(new EventServiceProvider($this->app));
         });
+
+        return $this;
+    }
+    public function withExceptions(Closure $using): static
+    {
+        $this->app->singleton(IExceptionHandler::class, ExceptionHandler::class);
+
+        $this->app->afterResolving(
+            ExceptionHandler::class,
+            function ($handler) use ($using) {
+                $manager = new ExceptionManager($this->app, $handler);
+                $this->app->instance(ExceptionManager::class, $manager);
+                return $using($manager);
+            }
+        );
 
         return $this;
     }

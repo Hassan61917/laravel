@@ -43,11 +43,7 @@ class CommandFinder implements ICommandFinder
     }
     protected function toCommand(SplFileInfo $file): string
     {
-        $basePath = rtrim(base_path()) . "\\";
-        $filePath = $file->getRealPath();
-        [$namespace, $path] = explode("\\", Str::after($filePath, $basePath), 2);
-        $path = Str::ucfirst($namespace) . "\\" . $path;
-        return str_replace([".php", '/'], ["", "\\"], $path);
+        return find_class($file->getRealPath());
     }
     protected function isValidCommand(string $command, array $except): bool
     {

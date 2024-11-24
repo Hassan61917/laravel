@@ -259,7 +259,7 @@ abstract class Model implements IRouteParameter, ArrayAccess
     {
         return $this->getKeyName();
     }
-    public function resolveRouteBinding(string $value, string $field = null): static
+    public function resolveRouteBinding(string $value, string $field = null): ?Model
     {
         return $this->resolveRouteBindingQuery($this, $value, $field)->first();
     }
@@ -298,7 +298,7 @@ abstract class Model implements IRouteParameter, ArrayAccess
     {
         return $this->registerGlobalScopes($this->newQueryWithoutScopes());
     }
-    protected function resolveRouteBindingQuery(Model $query, string $value, string $field = null)
+    protected function resolveRouteBindingQuery(Model $query, string $value, string $field = null): EloquentBuilder
     {
         return $query->where($field ?? $this->getRouteKeyName(), $value);
     }

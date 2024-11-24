@@ -43,6 +43,10 @@ class ValidationException extends \Exception
     {
         return $this->response;
     }
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
     protected function summarize(IValidator $validator)
     {
         $messages = $validator->getErrors()->all();
