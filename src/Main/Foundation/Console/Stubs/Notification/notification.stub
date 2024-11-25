@@ -1,0 +1,19 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Notifications\Messages\DatabaseMessage;
+use Src\Main\Notifications\Notification;
+
+class {{class}} extends Notification
+{
+    public function via(): array
+    {
+        return ["database"];
+    }
+    protected function database():DatabaseMessage
+    {
+        $data = [];
+        return new DatabaseMessage($data);
+    }
+}

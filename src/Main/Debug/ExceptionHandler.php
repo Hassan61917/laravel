@@ -2,7 +2,6 @@
 
 namespace Src\Main\Debug;
 
-use Exception;
 use Throwable;
 
 class ExceptionHandler implements IExceptionHandler
@@ -16,7 +15,7 @@ class ExceptionHandler implements IExceptionHandler
         $this->operations[] = $operation;
         return $this;
     }
-    public function handleOperation(string $name, ExceptionHandleable $item, Exception $e): void
+    public function handleOperation(string $name, ExceptionHandleable $item, Throwable $e): void
     {
         $operation = collect($this->operations)->first(
             fn($op) => str_contains(strtolower(get_class($op)), $name)

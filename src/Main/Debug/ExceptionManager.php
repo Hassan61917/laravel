@@ -2,10 +2,10 @@
 
 namespace Src\Main\Debug;
 
-use Exception;
 use Src\Main\Container\IContainer;
 use Src\Main\Debug\Operations\ReportOperation;
 use Src\Main\Debug\Operations\RenderOperation;
+use Throwable;
 
 class ExceptionManager
 {
@@ -18,7 +18,7 @@ class ExceptionManager
         $this->exceptionHandler->addOperation($operation);
         return $this;
     }
-    public function handleOperation(string $name, Exception $e): void
+    public function handleOperation(string $name, Throwable $e): void
     {
         if ($this->container->bound("command")) {
             $item = $this->container->make("command");
@@ -28,16 +28,16 @@ class ExceptionManager
 
         $this->exceptionHandler->handleOperation($name, $item, $e);
     }
-    public function handleReport(Exception $e): void
+    public function handleReport(Throwable $e): void
     {
         $this->handleOperation("report", $e);
     }
-    public function dontReport(\Exception $exception): static
+    public function dontReport(Throwable $exception): static
     {
         $this->getReportOperation()->dontReport($exception);
         return $this;
     }
-    public function stopIgnoring(\Exception $exception): static
+    public function stopIgnoring(Throwable $exception): static
     {
         $this->getReportOperation()->stopIgnoring($exception);
         return $this;

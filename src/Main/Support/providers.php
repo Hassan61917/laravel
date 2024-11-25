@@ -6,6 +6,7 @@ use Src\Main\Encryption\EncryptionServiceProvider;
 use Src\Main\Hashing\HashServiceProvider;
 use Src\Main\Http\HttpServiceProvider;
 use Src\Main\Log\LogServiceProvider;
+use Src\Main\Notifications\NotificationServiceProvider;
 use Src\Main\Session\SessionServiceProvider;
 use Src\Main\View\ViewServiceProvider;
 use Src\Main\Foundation\Providers\ConsoleServiceProvider;
@@ -40,4 +41,5 @@ return [
     LogServiceProvider::class,
     BusServiceProvider::class,
     QueueServiceProvider::class,
+    NotificationServiceProvider::class
 ];
