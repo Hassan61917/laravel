@@ -1,0 +1,13 @@
+<?php
+
+namespace {{namespace}};
+
+use Src\Main\Queue\QueueJob;
+
+class {{class}} extends QueueJob
+{
+    public function handle():void
+    {
+
+    }
+}

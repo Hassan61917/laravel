@@ -16,6 +16,8 @@ use Src\Main\Database\DatabaseServiceProvider;
 use Src\Main\Database\MigrationServiceProvider;
 use Src\Main\Cache\CacheServiceProvider;
 use Src\Main\Auth\AuthServiceProvider;
+use Src\Main\Bus\BusServiceProvider;
+use Src\Main\Queue\QueueServiceProvider;
 
 return [
     FoundationServiceProvider::class,
@@ -36,4 +38,6 @@ return [
     CacheServiceProvider::class,
     AuthServiceProvider::class,
     LogServiceProvider::class,
+    BusServiceProvider::class,
+    QueueServiceProvider::class,
 ];

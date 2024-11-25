@@ -1,6 +1,7 @@
 <?php
 
 use Src\Main\Auth\Authentication\IStatefulGuard;
+use Src\Main\Bus\PendingDispatch;
 use Src\Main\Container\Container;
 use Src\Main\Http\IResponseFactory;
 use Src\Main\Http\Redirect\Redirector;
@@ -8,6 +9,7 @@ use Src\Main\Http\Response;
 use Src\Main\Http\Redirect\RedirectResponse;
 use Src\Main\Http\ResponseFactory;
 use Src\Main\Http\UrlGenerator;
+use Src\Main\Queue\QueueJob;
 use Src\Main\Support\Env;
 use Src\Main\View\View;
 use Src\Symfony\Http\Cookie;
@@ -170,5 +172,11 @@ if (!function_exists('auth')) {
     function auth(): IStatefulGuard
     {
         return app("auth.driver");
+    }
+}
+if (!function_exists('dispatch')) {
+    function dispatch(QueueJob $job): PendingDispatch
+    {
+        return new PendingDispatch($job);
     }
 }

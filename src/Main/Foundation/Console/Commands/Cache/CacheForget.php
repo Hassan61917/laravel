@@ -12,7 +12,7 @@ class CacheForget extends AbstractCacheCommand
     public function __construct(
         protected CacheManager $cache
     ) {
-        parent::__construct($this->cache, "cache:forget");
+        parent::__construct($this->cache);
     }
     public function handle(): void
     {

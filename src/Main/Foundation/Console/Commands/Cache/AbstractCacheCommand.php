@@ -12,9 +12,8 @@ abstract class AbstractCacheCommand extends AppCommand
 {
     public function __construct(
         protected CacheManager $cache,
-        string $name
     ) {
-        parent::__construct($name);
+        parent::__construct();
     }
     protected function cache(): ICacheRepository
     {

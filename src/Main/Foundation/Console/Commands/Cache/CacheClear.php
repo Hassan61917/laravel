@@ -10,7 +10,7 @@ class CacheClear extends AbstractCacheCommand
     public function __construct(
         protected CacheManager $cache
     ) {
-        parent::__construct($this->cache, "cache:clear");
+        parent::__construct($this->cache);
     }
     public function handle(): void
     {
